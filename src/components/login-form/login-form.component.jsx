@@ -3,6 +3,7 @@ import React from 'react';
 import './login-form.component.scss';
 import FormInput from '../form-input/form-input.component';
 import CrownButton from '../crown-button/crown-button';
+import { signInWithGoogle } from '../../firebase/firebase.utils';
 
 class LoginForm extends React.Component {
   state = {
@@ -43,6 +44,7 @@ class LoginForm extends React.Component {
           />
           <br />
           <CrownButton type="submit">Log In</CrownButton>
+          <CrownButton onClick={signInWithGoogle}>Login with Google</CrownButton>
         </form>
       </div>
     );
