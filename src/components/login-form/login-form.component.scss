@@ -1,7 +1,13 @@
 .login-form {
-  width: 30vw;
+  width: 380px;
   display: flex;
   flex-direction: column;
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .title {
     margin: 10px 0;

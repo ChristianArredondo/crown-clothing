@@ -2,9 +2,9 @@ import React from 'react';
 
 import './crown-button.scss';
 
-const CrownButton = ({ children, ...otherProps }) => {
+const CrownButton = ({ children, isGoogle, ...otherProps }) => {
   return (
-    <button className="crown-button" {...otherProps}>
+    <button className={`${isGoogle ? 'google' : ''} crown-button`} {...otherProps}>
       {children}
     </button>
   );

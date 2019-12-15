@@ -3,8 +3,21 @@ import { Link } from 'react-router-dom';
 
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
+import { auth } from '../../firebase/firebase.utils';
 
-export default () => {
+const Header = ({ authUser }) => {
+  const logoutBtn = (
+    <div className="option" onClick={() => auth.signOut()}>
+      Logout
+    </div>
+  );
+  const loginLink = (
+    <Link className="option" to="/auth">
+      Login
+    </Link>
+  );
+  const loginOrLogout = authUser ? logoutBtn : loginLink;
+
   return (
     <div className="header">
       <Link to="/">
@@ -17,10 +30,10 @@ export default () => {
         <Link className="option" to="/contact">
           CONTACT
         </Link>
-        <Link className="option" to="/auth">
-          ACCOUNT
-        </Link>
+        {loginOrLogout}
       </div>
     </div>
   );
 };
+
+export default Header;

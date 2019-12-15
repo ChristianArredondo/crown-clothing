@@ -43,8 +43,12 @@ class LoginForm extends React.Component {
             handleChange={this.onFormChange}
           />
           <br />
-          <CrownButton type="submit">Log In</CrownButton>
-          <CrownButton onClick={signInWithGoogle}>Login with Google</CrownButton>
+          <div className="buttons">
+            <CrownButton type="submit">Log In</CrownButton>
+            <CrownButton isGoogle onClick={signInWithGoogle}>
+              Login with Google
+            </CrownButton>
+          </div>
         </form>
       </div>
     );
