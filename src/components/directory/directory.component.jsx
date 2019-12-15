@@ -9,7 +9,8 @@ class Directory extends React.Component {
       {
         title: 'hats',
         imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-        id: 1
+        id: 1,
+        path: 'hats'
       },
       {
         title: 'jackets',
@@ -39,8 +40,8 @@ class Directory extends React.Component {
   render() {
     return (
       <div className="directory-menu">
-        {this.state.menuItems.map(({ title, id, imageUrl, size }) => {
-          return <MenuItem key={id} title={title} imageUrl={imageUrl} size={size} />;
+        {this.state.menuItems.map(({ id, ...metaProps }) => {
+          return <MenuItem key={id} {...metaProps} />;
         })}
       </div>
     );
