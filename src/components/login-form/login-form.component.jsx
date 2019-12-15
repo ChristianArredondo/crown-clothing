@@ -2,6 +2,7 @@ import React from 'react';
 
 import './login-form.component.scss';
 import FormInput from '../form-input/form-input.component';
+import CrownButton from '../crown-button/crown-button';
 
 class LoginForm extends React.Component {
   state = {
@@ -41,7 +42,7 @@ class LoginForm extends React.Component {
             handleChange={this.onFormChange}
           />
           <br />
-          <button type="submit">Submit Form</button>
+          <CrownButton type="submit">Log In</CrownButton>
         </form>
       </div>
     );
