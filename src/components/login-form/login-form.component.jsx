@@ -3,7 +3,7 @@ import React from 'react';
 import './login-form.component.scss';
 import FormInput from '../form-input/form-input.component';
 import CrownButton from '../crown-button/crown-button';
-import { signInWithGoogle } from '../../firebase/firebase.utils';
+import { signInWithGoogle, auth } from '../../firebase/firebase.utils';
 
 class LoginForm extends React.Component {
   state = {
@@ -11,8 +11,16 @@ class LoginForm extends React.Component {
     password: ''
   };
 
-  onFormSubmit = evt => {
+  onFormSubmit = async evt => {
     evt.preventDefault();
+    const { email, password } = this.state;
+
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      this.setState({ email: '', password: '' });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   onFormChange = evt => {
