@@ -2,7 +2,7 @@ import React from 'react';
 
 import './login-form.component.scss';
 import FormInput from '../form-input/form-input.component';
-import CrownButton from '../crown-button/crown-button';
+import CrownButton from '../crown-button/crown-button.component';
 import { signInWithGoogle, auth } from '../../firebase/firebase.utils';
 
 class LoginForm extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './signup-form.scss';
 import FormInput from '../form-input/form-input.component';
-import CrownButton from '../crown-button/crown-button';
+import CrownButton from '../crown-button/crown-button.component';
 import { auth } from '../../firebase/firebase.utils';
 
 export default class SignupForm extends React.Component {

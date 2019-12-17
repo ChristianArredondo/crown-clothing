@@ -5,8 +5,10 @@ import { connect } from 'react-redux';
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import { auth } from '../../firebase/firebase.utils';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ authUser }) => {
+const Header = ({ authUser, cart }) => {
   const logoutBtn = (
     <div className="option" onClick={() => auth.signOut()}>
       Logout
@@ -32,13 +34,16 @@ const Header = ({ authUser }) => {
           CONTACT
         </Link>
         {loginOrLogout}
+        <CartIcon itemCount={0} />
       </div>
+      {cart.isVisible ? <CartDropdown /> : null}
     </div>
   );
 };
 
-const mapStateToProps = state => ({
-  authUser: state.user.authUser
+const mapStateToProps = ({ user, cart }) => ({
+  cart,
+  authUser: user.authUser
 });
 
 export default connect(mapStateToProps)(Header);

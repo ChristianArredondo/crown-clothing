@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './crown-button.scss';
+import './crown-button.styles.scss';
 
 const CrownButton = ({ children, isGoogle, ...otherProps }) => {
   return (
