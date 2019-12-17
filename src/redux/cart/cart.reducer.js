@@ -19,7 +19,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       if (!cartItem) {
         return {
           ...state,
-          cartItems: [...state.cartItems, { ...cartItem, count: 1 }]
+          cartItems: [...state.cartItems, { ...action.payload, count: 1 }]
         };
       }
 
