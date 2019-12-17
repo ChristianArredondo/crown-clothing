@@ -6,3 +6,4 @@ export const selectCartItems = createSelector([selectCart], cart => cart.cartIte
 export const selectCartItemsCount = createSelector([selectCartItems], (items = []) =>
   items.reduce((sum, { count }) => sum + count, 0)
 );
+export const selectIsCartVisible = createSelector([selectCart], cart => cart.isVisible);
