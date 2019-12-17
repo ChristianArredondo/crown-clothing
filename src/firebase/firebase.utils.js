@@ -13,8 +13,31 @@ const config = {
   measurementId: process.env.REACT_APP_measurementId
 };
 
-firebase.initializeApp(config);
+export const createUser = async (userAuthProfile, additionalData = {}) => {
+  if (!userAuthProfile) return;
 
+  const userRef = firestore.doc(`/users/${userAuthProfile.uid}`);
+  const userSnapshot = await userRef.get();
+
+  if (!userSnapshot.exists) {
+    const { displayName, email } = userAuthProfile;
+    const createdDate = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdDate,
+        ...additionalData
+      });
+    } catch (err) {
+      console.log(`Error creating user: ${err.message}`);
+    }
+  }
+
+  return userRef;
+};
+
+firebase.initializeApp(config);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
