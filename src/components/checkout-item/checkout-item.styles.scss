@@ -23,9 +23,14 @@
   }
 
   .quantity {
-    padding-left: 20px;
+    display: flex;
+    .value {
+      margin: 0 10px;
+    }
+    .count-button {
+      cursor: pointer;
+    }
   }
-
   .remove-button {
     padding-left: 12px;
     cursor: pointer;

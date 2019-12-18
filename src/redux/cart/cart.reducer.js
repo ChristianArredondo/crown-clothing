@@ -30,6 +30,27 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         )
       };
     }
+    case cartTypes.REMOVE_ITEM: {
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(item => item.id !== action.payload.id)
+      };
+    }
+    case cartTypes.DECREMENT_ITEM: {
+      if (action.payload.count === 1) {
+        return {
+          ...state,
+          cartItems: state.cartItems.filter(item => item.id !== action.payload.id)
+        };
+      }
+
+      return {
+        ...state,
+        cartItems: state.cartItems.map(item =>
+          item.id === action.payload.id ? { ...item, count: item.count - 1 } : item
+        )
+      };
+    }
     default:
       return state;
   }
