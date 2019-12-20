@@ -1,9 +1,11 @@
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
+import runtimeEnv from '@mars/heroku-js-runtime-env';
 
 import './stripe-button.styles.scss';
 
-const stripePublishableKey = process.env.REACT_APP_stripe_publishableKey;
+const env = runtimeEnv();
+const stripePublishableKey = env.REACT_APP_stripe_publishableKey;
 
 const StripeCheckoutButton = ({ price }) => {
   const priceForStripe = price * 100;
