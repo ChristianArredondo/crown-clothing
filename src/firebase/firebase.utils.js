@@ -1,9 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import runtimeEnv from '@mars/heroku-js-runtime-env';
 
-const env = runtimeEnv();
+import { env } from '../runtime.env'
 
 const config = {
   apiKey: env.REACT_APP_apiKey,
