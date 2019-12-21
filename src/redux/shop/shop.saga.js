@@ -1,26 +1,30 @@
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeLatest, put, call } from 'redux-saga/effects';
 import { shopActionTypes } from './shop.types';
 import { firestore } from '../../firebase/firebase.utils';
 import { fetchCollectionsSuccess, fetchCollectionsError } from './shop.actions';
+
+const mapToDictionary = snapshot => {
+  return snapshot.docs
+    .map(doc => {
+      const { title, items } = doc.data();
+      return {
+        routeName: encodeURI(title.toLowerCase()),
+        id: doc.id,
+        title,
+        items
+      };
+    })
+    .reduce((memo, coll) => {
+      memo[coll.title.toLowerCase()] = coll;
+      return memo;
+    }, {});
+};
 
 export function* fetchCollectionsAsync() {
   try {
     const collectionRef = firestore.collection('collections');
     const snapshot = yield collectionRef.get();
-    const collectionsDictionary = snapshot.docs
-      .map(doc => {
-        const { title, items } = doc.data();
-        return {
-          routeName: encodeURI(title.toLowerCase()),
-          id: doc.id,
-          title,
-          items
-        };
-      })
-      .reduce((memo, coll) => {
-        memo[coll.title.toLowerCase()] = coll;
-        return memo;
-      }, {});
+    const collectionsDictionary = yield call(mapToDictionary, snapshot);
     yield put(fetchCollectionsSuccess(collectionsDictionary));
   } catch (err) {
     yield put(fetchCollectionsError(err));
@@ -28,5 +32,5 @@ export function* fetchCollectionsAsync() {
 }
 
 export function* fetchCollections() {
-  yield takeEvery(shopActionTypes.FETCH_COLLECTIONS, fetchCollectionsAsync);
+  yield takeLatest(shopActionTypes.FETCH_COLLECTIONS, fetchCollectionsAsync);
 }
