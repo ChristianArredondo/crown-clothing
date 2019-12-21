@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import { env } from '../runtime.env'
+import { env } from '../runtime.env';
 
 const config = {
   apiKey: env.REACT_APP_apiKey,
@@ -40,6 +40,18 @@ export const createUser = async (userAuthProfile, additionalData = {}) => {
 };
 
 firebase.initializeApp(config);
+
+export const addCollectionAndDocuments = async (collName, objectsToAdd) => {
+  const collRef = firestore.collection(collName);
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collRef.doc();
+    batch.set(newDocRef, obj);
+  });
+
+  await batch.commit();
+};
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
