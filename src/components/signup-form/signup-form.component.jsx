@@ -3,9 +3,10 @@ import React from 'react';
 import './signup-form.scss';
 import FormInput from '../form-input/form-input.component';
 import CrownButton from '../crown-button/crown-button.component';
-import { auth } from '../../firebase/firebase.utils';
+import { connect } from 'react-redux';
+import { registerUserAction } from '../../redux/user/user.actions';
 
-export default class SignupForm extends React.Component {
+class SignupForm extends React.Component {
   state = {
     displayName: '',
     email: '',
@@ -22,12 +23,7 @@ export default class SignupForm extends React.Component {
       return;
     }
 
-    try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      this.setState({ displayName: '', email: '', password: '', passwordConfirm: '' });
-    } catch (err) {
-      console.error(err);
-    }
+    this.props.dispatchRegisterUser({ email, password });
   };
 
   onFormChange = evt => {
@@ -81,3 +77,9 @@ export default class SignupForm extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  dispatchRegisterUser: emailAndPassword => dispatch(registerUserAction(emailAndPassword))
+});
+
+export default connect(null, mapDispatchToProps)(SignupForm);

@@ -67,3 +67,22 @@ export const logoutUserAction = () => ({
 export const logoutUserSuccessAction = () => ({
   type: userActionTypes.LOGOUT_USER_SUCCESS
 });
+
+export const registerUserAction = emailAndPassword => ({
+  type: userActionTypes.REGISTER_USER,
+  payload: emailAndPassword
+});
+
+export const registerUserSuccessAction = user => ({
+  type: userActionTypes.REGISTER_USER_SUCCESS,
+  payload: {
+    user
+  }
+});
+
+export const registerUserErrorAction = error => ({
+  type: userActionTypes.REGISTER_USER_ERROR,
+  payload: {
+    error
+  }
+});

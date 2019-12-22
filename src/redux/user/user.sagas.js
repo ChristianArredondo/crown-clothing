@@ -7,7 +7,9 @@ import {
   signInWithGoogleSuccessAction,
   checkUserSessionSuccessAction,
   checkUserSessionErrorAction,
-  logoutUserSuccessAction
+  logoutUserSuccessAction,
+  registerUserSuccessAction,
+  registerUserErrorAction
 } from './user.actions';
 
 function* getSnapshotFromAuth(userAuth) {
@@ -72,11 +74,26 @@ export function* logoutUserSaga() {
   yield takeLatest(userActionTypes.LOGOUT_USER, performLogout);
 }
 
+export function* performUserRegistration({ payload: { email, password } }) {
+  try {
+    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+    const authUserProfile = yield call(getSnapshotFromAuth, user);
+    yield put(registerUserSuccessAction(authUserProfile));
+  } catch (err) {
+    yield put(registerUserErrorAction(err));
+  }
+}
+
+export function* registerUserSaga() {
+  yield takeLatest(userActionTypes.REGISTER_USER, performUserRegistration);
+}
+
 export function* userSagas() {
   yield all([
     call(signInWithGoogleStartSaga),
     call(signInWithEmailStartSaga),
     call(checkUserSessionSaga),
-    call(logoutUserSaga)
+    call(logoutUserSaga),
+    call(registerUserSaga)
   ]);
 }
