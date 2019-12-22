@@ -1,14 +1,16 @@
 import { takeLatest, put, call, all } from 'redux-saga/effects';
 import { userActionTypes } from './user.types';
-import { auth, googleProvider, createUser } from '../../firebase/firebase.utils';
+import { auth, googleProvider, createUser, getCurrentUser } from '../../firebase/firebase.utils';
 import {
   signInWithEmailSuccessAction,
   signInWithEmailErrorAction,
-  signInWithGoogleSuccessAction
+  signInWithGoogleSuccessAction,
+  checkUserSessionSuccessAction,
+  checkUserSessionErrorAction
 } from './user.actions';
 
-function* getSnapshotFromAuth(user) {
-  const userRef = yield call(createUser, user);
+function* getSnapshotFromAuth(userAuth) {
+  const userRef = yield call(createUser, userAuth);
   const userSnapshot = yield userRef.get();
   return yield {
     id: userSnapshot.id,
@@ -44,6 +46,26 @@ export function* signInWithEmailStartSaga() {
   yield takeLatest(userActionTypes.SIGN_IN_WITH_EMAIL_START, signInWithEmailSaga);
 }
 
+export function* isUserAuthenticated() {
+  try {
+    const authUser = yield getCurrentUser();
+    if (!authUser) return;
+
+    const authUserProfile = yield call(getSnapshotFromAuth, authUser);
+    yield put(checkUserSessionSuccessAction(authUserProfile));
+  } catch (err) {
+    yield put(checkUserSessionErrorAction(err));
+  }
+}
+
+export function* checkUserSessionSaga() {
+  yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
+}
+
 export function* userSagas() {
-  yield all([call(signInWithGoogleStartSaga), call(signInWithEmailStartSaga)]);
+  yield all([
+    call(signInWithGoogleStartSaga),
+    call(signInWithEmailStartSaga),
+    call(checkUserSessionSaga)
+  ]);
 }

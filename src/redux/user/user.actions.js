@@ -41,3 +41,21 @@ export const signInWithEmailErrorAction = error => ({
     error
   }
 });
+
+export const checkUserSessionAction = () => ({
+  type: userActionTypes.CHECK_USER_SESSION
+});
+
+export const checkUserSessionSuccessAction = user => ({
+  type: userActionTypes.CHECK_USER_SESSION_SUCCESS,
+  payload: {
+    user
+  }
+});
+
+export const checkUserSessionErrorAction = error => ({
+  type: userActionTypes.CHECK_USER_SESSION_ERROR,
+  payload: {
+    error
+  }
+});
