@@ -2,17 +2,16 @@ import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 
 import './stripe-button.styles.scss';
-import { env } from '../../runtime.env'
 
-const stripePublishableKey = env.REACT_APP_stripe_publishableKey;
+const stripePublishableKey = process.env.REACT_APP_stripe_publishableKey;
 
 const StripeCheckoutButton = ({ price }) => {
   const priceForStripe = price * 100;
   const onToken = token => {
     console.log(token);
     alert('Payment successful!');
-  }
-  
+  };
+
   return (
     <StripeCheckout
       label="Pay Now"
@@ -24,8 +23,8 @@ const StripeCheckoutButton = ({ price }) => {
       panelLabel="Pay Now"
       token={onToken}
       stripeKey={stripePublishableKey}
-     />
-  )
-}
+    />
+  );
+};
 
 export default StripeCheckoutButton;
