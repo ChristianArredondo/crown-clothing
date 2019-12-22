@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+app.get('/api/ping', (req, res) => {
+  res.send({ yo: 'server is alive' });
+});
+
 if (isProd) {
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.get('*', (req, res) => {
@@ -27,8 +31,4 @@ app.listen(port, error => {
     throw error;
   }
   console.log(`Server listening on post ${port}`);
-});
-
-app.post('/ping', (req, res) => {
-  res.send({ yo: 'server is alive' });
 });
