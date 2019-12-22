@@ -29,6 +29,6 @@ app.listen(port, error => {
   console.log(`Server listening on post ${port}`);
 });
 
-app.get('/ping', (req, res) => {
+app.post('/ping', (req, res) => {
   res.send({ yo: 'server is alive' });
 });
