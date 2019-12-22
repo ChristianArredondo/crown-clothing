@@ -59,3 +59,11 @@ export const checkUserSessionErrorAction = error => ({
     error
   }
 });
+
+export const logoutUserAction = () => ({
+  type: userActionTypes.LOGOUT_USER
+});
+
+export const logoutUserSuccessAction = () => ({
+  type: userActionTypes.LOGOUT_USER_SUCCESS
+});

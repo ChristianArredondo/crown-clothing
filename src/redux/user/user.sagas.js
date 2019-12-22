@@ -6,7 +6,8 @@ import {
   signInWithEmailErrorAction,
   signInWithGoogleSuccessAction,
   checkUserSessionSuccessAction,
-  checkUserSessionErrorAction
+  checkUserSessionErrorAction,
+  logoutUserSuccessAction
 } from './user.actions';
 
 function* getSnapshotFromAuth(userAuth) {
@@ -62,10 +63,20 @@ export function* checkUserSessionSaga() {
   yield takeLatest(userActionTypes.CHECK_USER_SESSION, isUserAuthenticated);
 }
 
+export function* performLogout() {
+  yield auth.signOut();
+  yield put(logoutUserSuccessAction());
+}
+
+export function* logoutUserSaga() {
+  yield takeLatest(userActionTypes.LOGOUT_USER, performLogout);
+}
+
 export function* userSagas() {
   yield all([
     call(signInWithGoogleStartSaga),
     call(signInWithEmailStartSaga),
-    call(checkUserSessionSaga)
+    call(checkUserSessionSaga),
+    call(logoutUserSaga)
   ]);
 }

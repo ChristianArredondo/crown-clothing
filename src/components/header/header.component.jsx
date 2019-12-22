@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 
 import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
-import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectAuthUser } from '../../redux/user/user.selectors';
 import { selectIsCartVisible } from '../../redux/cart/cart.selectors';
 import { createStructuredSelector } from 'reselect';
+import { logoutUserAction } from '../../redux/user/user.actions';
 
-const Header = ({ authUser, isVisible }) => {
+const Header = ({ authUser, isVisible, dispatchLogoutUser }) => {
   const logoutBtn = (
-    <div className="option" onClick={() => auth.signOut()}>
+    <div className="option" onClick={dispatchLogoutUser}>
       Logout
     </div>
   );
@@ -49,4 +49,8 @@ const mapStateToProps = createStructuredSelector({
   authUser: selectAuthUser
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = dispatch => ({
+  dispatchLogoutUser: () => dispatch(logoutUserAction())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
