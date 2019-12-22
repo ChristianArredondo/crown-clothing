@@ -20,7 +20,7 @@ const mapToDictionary = snapshot => {
     }, {});
 };
 
-export function* fetchCollectionsAsync() {
+export function* fetchCollectionsAsyncSaga() {
   try {
     const collectionRef = firestore.collection('collections');
     const snapshot = yield collectionRef.get();
@@ -31,6 +31,6 @@ export function* fetchCollectionsAsync() {
   }
 }
 
-export function* fetchCollections() {
-  yield takeLatest(shopActionTypes.FETCH_COLLECTIONS, fetchCollectionsAsync);
+export function* fetchCollectionsSaga() {
+  yield takeLatest(shopActionTypes.FETCH_COLLECTIONS, fetchCollectionsAsyncSaga);
 }

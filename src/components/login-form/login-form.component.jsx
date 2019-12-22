@@ -3,7 +3,8 @@ import React from 'react';
 import './login-form.component.scss';
 import FormInput from '../form-input/form-input.component';
 import CrownButton from '../crown-button/crown-button.component';
-import { signInWithGoogle, auth } from '../../firebase/firebase.utils';
+import { signInWithGoogleAction, signInWithEmailAction } from '../../redux/user/user.actions';
+import { connect } from 'react-redux';
 
 class LoginForm extends React.Component {
   state = {
@@ -13,14 +14,7 @@ class LoginForm extends React.Component {
 
   onFormSubmit = async evt => {
     evt.preventDefault();
-    const { email, password } = this.state;
-
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      this.setState({ email: '', password: '' });
-    } catch (err) {
-      console.error(err);
-    }
+    this.props.dispatchEmailSignIn(this.state);
   };
 
   onFormChange = evt => {
@@ -53,7 +47,7 @@ class LoginForm extends React.Component {
           <br />
           <div className="buttons">
             <CrownButton type="submit">Log In</CrownButton>
-            <CrownButton isGoogle onClick={signInWithGoogle}>
+            <CrownButton type="button" isGoogle onClick={this.props.dispatchGoogleSignIn}>
               Login with Google
             </CrownButton>
           </div>
@@ -63,4 +57,9 @@ class LoginForm extends React.Component {
   }
 }
 
-export default LoginForm;
+const mapDispatchToProps = dispatch => ({
+  dispatchGoogleSignIn: () => dispatch(signInWithGoogleAction()),
+  dispatchEmailSignIn: emailAndPassword => dispatch(signInWithEmailAction(emailAndPassword))
+});
+
+export default connect(null, mapDispatchToProps)(LoginForm);
