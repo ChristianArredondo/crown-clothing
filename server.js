@@ -4,12 +4,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const isProd = process.env.NODE_ENV === 'production';
-if (isProd) {
+if (!isProd) {
   require('dotenv').config();
 }
 
 const app = express();
 const port = process.env.PORT || 8000;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +18,23 @@ app.use(cors());
 
 app.get('/api/ping', (req, res) => {
   res.send({ yo: 'server is alive' });
+});
+
+app.post('/payment', (req, res) => {
+  const body = {
+    source: req.body.token.id,
+    amount: req.body.amount,
+    currency: 'usd'
+  };
+
+  stripe.charges.create(body, (stripeErr, stripeRes) => {
+    if (stripeErr) {
+      res.status(500).send({ error: stripeErr });
+      return;
+    }
+
+    res.send({ success: stripeRes });
+  });
 });
 
 if (isProd) {
